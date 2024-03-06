@@ -11,7 +11,7 @@ class Category:
         """Создаем шаблон класса 'Категории товара' """
         self.name = name
         self.description = description
-        self.__products = []
+        self.__products = __products
 
         Category.total_categories += 1
         Category.total_products += len(self.__products)
@@ -21,7 +21,7 @@ class Category:
         self.__products.append(good)
 
     @property
-    def print_goods(self):
+    def products(self):
         """геттер, который выводит список товаров"""
         prod = ''
         for good in self.__products:

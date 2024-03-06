@@ -32,4 +32,10 @@ class Product:
         float(new_price)
         if new_price <= 0.0:
             print('Цена введена не корректно!')
+        elif new_price < self._price:
+            answer = input('Цена ниже преждней. Вы хотите изменить цену (y/n):\n').lower()
+            if answer == 'y':
+                self._price = new_price
+        else:
+            self._price = new_price
 
