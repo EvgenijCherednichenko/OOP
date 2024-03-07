@@ -1,11 +1,11 @@
 import json
-from src.product import Product
-from src.category import Category
+from product import Product
+from category import Category
 
-def connection_file():
-    with open("products.json", 'r', encoding='utf-8') as file:
+
+def main():
+    with open("../products.json", 'r', encoding='utf-8') as file:
         datas = json.load(file)
-
 
     # создаем экземпляры класса Category
     for category in datas:
@@ -29,7 +29,7 @@ def connection_file():
 
         print(f'Всего позиций в категории: {len(category_goods)}')
 
-    print(f'Всего категорий: {Category.count_category}')
+    print(f'Всего категорий: {Category.total_categories}')
     print(f'Всего товаров: {Product.count_product}')
 
 
