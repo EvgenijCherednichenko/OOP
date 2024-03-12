@@ -1,9 +1,9 @@
 class Product:
     """Товар"""
-    name: str          # название товара
-    description: str   # описание товара
-    price: float       # цена товара
-    quantity: int      # всего в наличии
+    name: str  # название товара
+    description: str  # описание товара
+    price: float  # цена товара
+    quantity: int  # всего в наличии
     count_product = 0  # Счетчик количества продуктов (экземпляров, не остатка)
 
     def __init__(self, name, description, price, quantity):
@@ -46,3 +46,45 @@ class Product:
                 self.__price = new_price
         else:
             self.__price = new_price
+
+
+class SmartPhones(Product):
+    """Класс SmartPhones наследник от Product"""
+    capacity: float  # роизводтельность "Гц"
+    model: str       # модель
+    memory: int      # объем встроенной памяти
+    color: str       # цвет
+
+    def __init__(self, name, description, price, quantity, capacity, model, memory, color):
+        """supper().__init__ от SmartPhones"""
+        super().__init__(name, description, price, quantity)
+        self.capacity = capacity
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    def __add__(self, other):
+        """Суммирование объектов, в случае, если объект другого класса - вывод ValueError"""
+        if isinstance(other, SmartPhones):
+            return (self.price * self.quantity) + (other.price * other.quantity)
+        raise ValueError("Ошибка")
+
+
+class LawnGrass(Product):
+    """Класс LawnGrass наследник от Product"""
+    country: str  # страна-производитель
+    period: int   # срок прорастания
+    color: str    # цвет
+
+    def __init__(self, name, description, price, quantity, country, period, color):
+        """supper().__init__ от LawnGrass"""
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.period = period
+        self.color = color
+
+    def __add__(self, other):
+        """Суммирование объектов, в случае, если объект другого класса - вывод ValueError"""
+        if not isinstance(other, LawnGrass):
+            raise ValueError("Ошибка")
+        return (self.price * self.quantity) + (other.price * other.quantity)
