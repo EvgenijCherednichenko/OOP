@@ -1,6 +1,5 @@
 import json
-from product import Product
-from category import Category
+from classes import Category, Product
 
 
 def main():
@@ -9,7 +8,7 @@ def main():
 
     # создаем экземпляры класса Category
     for category in datas:
-        categories = Category(category['name'], category['description'])
+        categories = Category(category['name'], category['description'], category['products'])
         category_goods = []
 
         # выводим на печать информацию об экземпляре класса Category
