@@ -15,9 +15,9 @@ class BaseProduct(ABC):
 
 class Category:
     """Класс категории тавара"""
-    name: str         # название категории
+    name: str  # название категории
     description: str  # описание категории
-    products: list    # список товаров в этой категории
+    products: list  # список товаров в этой категории
 
     total_categories = 0
     total_products = 0
@@ -67,6 +67,29 @@ class Category:
             prod += f'{good.name}, {good.price} руб. Остаток: {good.quantity} шт.\n'
         return prod
 
+    def average_sum(self):
+        """Метод, который подсчитывает средний ценник всех товаров.
+        Если в Категории не передан ни один товар, возвращает 0"""
+        try:
+            total_sum = 0
+            for good in self.__products:
+                total_sum += good.price
+            average_sum = total_sum / len(self.__products)
+            return average_sum
+        except ZeroDivisionError:
+            return 0
+
+
+class ZeroQuantity(Exception):
+    """
+    Класс исключения, когда в «Категорию»
+    добавляется товар с нулевым количеством
+    """
+
+    def __init__(self, message="Ошибка количества"):
+        self.message = message
+        super().__init__(message)
+
 
 class MixinRepr:
     """ Миксин, который можно добавить к каждому классу
@@ -82,10 +105,10 @@ class MixinRepr:
 
 class Product(BaseProduct, MixinRepr):
     """Товар"""
-    name: str          # название товара
-    description: str   # описание товара
-    price: float       # цена товара
-    quantity: int      # всего в наличии
+    name: str  # название товара
+    description: str  # описание товара
+    price: float  # цена товара
+    quantity: int  # всего в наличии
     count_product = 0  # Счетчик количества продуктов (экземпляров, не остатка)
 
     def __init__(self, name, description, price, quantity):
@@ -191,17 +214,33 @@ def printing():
                           512, 'Black')
     phone_2 = SmartPhones('Motorola', 'Раскладушка', 2823.50, 3, 516, 'V3',
                           8, 'Black')
-    print(f'Общая сумма категории "Смартфон": {phone_1 + phone_2}')
 
-    grass_1 = LawnGrass('Премиум-газон', 'Премиум', 1000, 3, 'Россия',
-                        13, 'green')
-    grass_2 = LawnGrass('Газон дачный', 'Эконом', 200, 10, 'Россия',
-                        10, 'light-green')
-    print(f'Общая сумма категории "Трава газонна": {grass_1 + grass_2}')
+    category_1.add_goods(phone_1)
+    category_1.add_goods(phone_2)
 
-    # category_1.add_goods(phone_2)  # Проверка, что обновленный метод append_goods работает корректно
+    try:
+        category_2 = Category('Газонная трава', 'трава для сада', 'products')
+        grass_1 = LawnGrass('Премиум-газон', 'Премиум', 1000, 0, 'Россия',
+                            13, 'green')
+        category_2.add_goods(grass_1)
+    except ZeroQuantity:
+        print("Добавляется товар с нулевым количеством")
+    else:
+        print("Товар добавлен")
+    finally:
+        print("Обработка добавления товара завершена")
 
-    print(grass_1)  # Вывод на печать категории, с добавленным новым продуктом
+    # print(f'Общая сумма категории "Смартфон": {phone_1 + phone_2}')
+    #
+    # grass_1 = LawnGrass('Премиум-газон', 'Премиум', 1000, 3, 'Россия',
+    #                     13, 'green')
+    # grass_2 = LawnGrass('Газон дачный', 'Эконом', 200, 10, 'Россия',
+    #                     10, 'light-green')
+    # print(f'Общая сумма категории "Трава газонна": {grass_1 + grass_2}')
+    #
+    # # category_1.add_goods(phone_2)  # Проверка, что обновленный метод append_goods работает корректно
+    #
+    # print(grass_1)  # Вывод на печать категории, с добавленным новым продуктом
 
 
 if __name__ == '__main__':
